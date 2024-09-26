@@ -17,6 +17,7 @@ export default function App() {
   }, [tasks]);
 
   // ... Load and save tasks functions ...
+
   const loadTasks = async () => {
     try {
       const storedTasks = await AsyncStorage.getItem('tasks');
@@ -35,7 +36,7 @@ export default function App() {
       console.error('Error saving tasks:', error);
     }
   };
-
+  
   const addTask = () => {
     if (newTask.trim() !== '') {
       setTasks([...tasks, { id: Date.now().toString(), text: newTask, completed: false }]);
@@ -69,24 +70,24 @@ export default function App() {
   };
 
   // ... Render item function ...
-  const renderItem = ({ item }) => (
-    <View style={styles.taskItem}>
-      <TouchableOpacity onPress={() => toggleTask(item.id)} style={styles.taskTextContainer}>
-        <Text style={[styles.taskText, item.completed && styles.completedTask]}>
-          {item.text}
-        </Text>
+  
+const renderItem = ({ item }) => (
+  <View style={styles.taskItem}>
+    <TouchableOpacity onPress={() => toggleTask(item.id)} style={styles.taskTextContainer}>
+      <Text style={[styles.taskText, item.completed && styles.completedTask]}>
+        {item.text}
+      </Text>
+    </TouchableOpacity>
+    <View style={styles.taskButtons}>
+      <TouchableOpacity onPress={() => startEditTask(item.id, item.text)} style={styles.editButton}>
+        <Text style={styles.buttonText}>Edit</Text>
       </TouchableOpacity>
-      <View style={styles.taskButtons}>
-        <TouchableOpacity onPress={() => startEditTask(item.id, item.text)} style={styles.editButton}>
-          <Text style={styles.buttonText}>Edit</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => deleteTask(item.id)} style={styles.deleteButton}>
-          <Text style={styles.buttonText}>Delete</Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity onPress={() => deleteTask(item.id)} style={styles.deleteButton}>
+        <Text style={styles.buttonText}>Delete</Text>
+      </TouchableOpacity>
     </View>
-  );
-
+  </View>
+);
 
   return (
     <KeyboardAvoidingView 
